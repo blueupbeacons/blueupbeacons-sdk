@@ -80,6 +80,11 @@ public final class Beacon {
         advFrames = new AdvertisingFrames(services);
     }
 
+    /**
+     * Get Current RSSI value
+     *
+     * @return current rssi measured value
+     */
     public int getRssi() {
         return rssi;
     }
@@ -128,6 +133,10 @@ public final class Beacon {
         return buffer.toString();
     }
 
+    /**
+     * Get Beacon fullname (BLUEUP-xx-yyyyy)
+     * @return
+     */
     public String getName() {
         return String.format("BLUEUP-%s-%s", getModel(2), getSerial(5));
     }

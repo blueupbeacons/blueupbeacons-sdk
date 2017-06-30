@@ -54,6 +54,10 @@ public final class Scanner {
 
         void onError(Scanner scanner, int error);
 
+        void onStart(Scanner scanner);
+
+        void onStop(Scanner scanner);
+
         boolean accept(Beacon beacon);
 
         void onBeaconDetected(Scanner scanner, Beacon beacon);
@@ -205,7 +209,7 @@ public final class Scanner {
         return beacon;
     }
 
-    public boolean isScanning(){
+    public boolean isScanning() {
         return bluetoothLeScannerRunning;
     }
 
@@ -222,6 +226,7 @@ public final class Scanner {
 
         bluetoothLeScannerRunning = true;
         bluetoothLeScanner.startScan(bluetoothLeScannerCallback);
+        handler.onStart(this);
     }
 
     public void stop() {
@@ -234,5 +239,17 @@ public final class Scanner {
         bluetoothLeScanner.stopScan(bluetoothLeScannerCallback);
         bluetoothLeScannerRunning = false;
         beacons.clear();
+        handler.onStop(this);
+    }
+
+    /**
+     * Start or stop the scanner
+     */
+    public void toggle() {
+        if (bluetoothLeScannerRunning) {
+            stop();
+        } else {
+            start();
+        }
     }
 }
