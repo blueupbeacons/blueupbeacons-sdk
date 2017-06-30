@@ -81,10 +81,16 @@ public final class Quuppa extends Frame {
         return hash;
     }
 
+    /**
+     * @return Advertise custom tag
+     */
     public boolean hasCustomTag() {
         return this.hasCustomTag;
     }
 
+    /**
+     * @return Custom tag Value if set, otherwise NULL
+     */
     public String getCustomTag() {
         return this.customTagValue;
     }

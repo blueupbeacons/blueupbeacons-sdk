@@ -141,6 +141,10 @@ public final class Beacon {
         return String.format("BLUEUP-%s-%s", getModel(2), getSerial(5));
     }
 
+    /**
+     *
+     * @return Device MAC Address
+     */
     public String getAddress() {
         return address;
     }
@@ -162,9 +166,6 @@ public final class Beacon {
             }
         }
     }
-
-
-
 
     public JSONObject toJson() {
         JSONObject object = new JSONObject();

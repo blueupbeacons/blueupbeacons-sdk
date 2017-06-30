@@ -77,14 +77,27 @@ public final class IBeacon extends Frame {
         return hash;
     }
 
+
+    /**
+     *
+     * @return UUID
+     */
     public String getUuid() {
         return uuid;
     }
 
+    /**
+     *
+     * @return Major
+     */
     public int getMajor() {
         return major;
     }
 
+    /**
+     *
+     * @return Minor
+     */
     public int getMinor() {
         return minor;
     }

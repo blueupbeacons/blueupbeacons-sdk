@@ -76,6 +76,8 @@ public final class EddystoneTlm extends Frame {
         return object;
     }
 
+
+
     public int getVersion() {
         return version;
     }

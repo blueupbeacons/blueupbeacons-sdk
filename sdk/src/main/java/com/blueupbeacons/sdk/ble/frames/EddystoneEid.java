@@ -68,6 +68,9 @@ public final class EddystoneEid extends Frame {
         return txPower;
     }
 
+    /**
+     * @return Identifier
+     */
     public String getId() {
         return id;
     }

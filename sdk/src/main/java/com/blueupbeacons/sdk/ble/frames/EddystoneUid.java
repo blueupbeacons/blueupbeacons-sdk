@@ -70,10 +70,18 @@ public final class EddystoneUid extends Frame {
         return hash;
     }
 
+    /**
+     *
+     * @return Namespace ID
+     */
     public String getNamespace(){
         return namespace;
     }
 
+    /**
+     *
+     * @return Instance ID
+     */
     public String getInstance(){
         return instance;
     }

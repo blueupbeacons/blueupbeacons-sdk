@@ -51,6 +51,27 @@ public final class Sensors extends Frame {
         pressure = ((double) reader.readUInt32()) * .1;
     }
 
+    /**
+     * @return Temperature
+     */
+    public double getTemperature() {
+        return temperature;
+    }
+
+    /**
+     * @return Humidity
+     */
+    public double getHumidity() {
+        return humidity;
+    }
+
+    /**
+     * @return Pressure
+     */
+    public double getPressure() {
+        return pressure;
+    }
+
     @Override
     protected JSONObject jsonData() {
         JSONObject object = new JSONObject();

@@ -104,6 +104,10 @@ public final class EddystoneUrl extends Frame {
         return hash;
     }
 
+
+    /**
+     * @return Url;
+     */
     public String getUrl() {
         return url;
     }
