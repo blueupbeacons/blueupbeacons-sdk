@@ -8,10 +8,10 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by massimo on 16/06/17.
- */
 
+/**
+ * Beacon
+ */
 public final class Beacon {
 
     public class AdvertisingFrames {
@@ -66,7 +66,6 @@ public final class Beacon {
     private int rssi;
     private int model, serial;
     private int battery;
-    private byte technologies;
     private AdvertisingFrames advFrames;
 
     private final HashMap<String, Frame> map = new HashMap<>();
@@ -76,7 +75,7 @@ public final class Beacon {
         this.model = model;
         this.serial = serial;
         this.battery = battery;
-        this.technologies = services;
+
         advFrames = new AdvertisingFrames(services);
     }
 
@@ -126,10 +125,19 @@ public final class Beacon {
         return buffer.toString();
     }
 
+    /**
+     *
+     * @return serial number
+     */
     public int getSerial() {
         return serial;
     }
 
+    /**
+     *
+     * @param padding padding length
+     * @return
+     */
     public String getSerial(int padding) {
         String value = String.valueOf(serial);
         padding = padding - value.length();
@@ -184,6 +192,10 @@ public final class Beacon {
         }
     }
 
+    /**
+     *
+     * @return Beacon json serialization
+     */
     public JSONObject toJson() {
         JSONObject object = new JSONObject();
         try {
@@ -192,7 +204,6 @@ public final class Beacon {
             object.put("model", model);
             object.put("serial", serial);
             object.put("battery", battery);
-            object.put("techFlag", technologies);
             object.put("technologies", advFrames.toJson());
 
             JSONArray frames = new JSONArray();
