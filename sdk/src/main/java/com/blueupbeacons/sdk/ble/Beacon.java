@@ -89,14 +89,27 @@ public final class Beacon {
         return rssi;
     }
 
+    /**
+     *
+     * @return battery level (0-100)
+     */
     public int getBattery() {
         return battery;
     }
 
+    /**
+     *
+     * @return model
+     */
     public int getModel() {
         return model;
     }
 
+    /**
+     *
+     * @param padding padding length
+     * @return model
+     */
     public String getModel(int padding) {
         String value = String.valueOf(model);
         padding = padding - value.length();
@@ -149,6 +162,10 @@ public final class Beacon {
         return address;
     }
 
+    /**
+     *
+     * @return Advertise flags
+     */
     public AdvertisingFrames advertise() {
         return advFrames;
     }
