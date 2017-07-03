@@ -108,10 +108,14 @@ public class MainActivity extends AppCompatActivity {
                             });
                         }
                     });
-                }
 
-                // Start/Stop
-                scanner.toggle();
+                    // Start Scanner
+                    scanner.start(Scanner.Mode.MaxPerformance);
+                } else {
+
+                    // Start/Stop
+                    scanner.toggle();
+                }
             }
         });
 
