@@ -14,10 +14,105 @@ compile 'com.blueupbeacons.sdk:sdk:1.0.0'
 
 ## Objects
 
-### Scanner
+## Beacon
+
+### `public int getRssi()`
+
+Get Current RSSI value
+
+ * **Returns:** current rssi measured value
+
+### `public int getBattery()`
+
+ * **Returns:** battery level (0-100)
+
+### `public int getModel()`
+
+ * **Returns:** model
+
+### `public String getModel(int padding)`
+
+ * **Parameters:** `padding` — padding length
+ * **Returns:** model
+
+### `public int getSerial()`
+
+ * **Returns:** serial number
+
+### `public String getSerial(int padding)`
+
+ * **Parameters:** `padding` — padding length
+ * **Returns:** 
+
+### `public String getName()`
+
+Get Beacon fullname (BLUEUP-xx-yyyyy)
+
+ * **Returns:** 
+
+### `public String getAddress()`
+
+ * **Returns:** Device MAC Address
+
+### `public AdvertisingFrames advertise()`
+
+ * **Returns:** Advertise flags
+
+### `public JSONObject toJson()`
+
+ * **Returns:** Beacon json serialization
+
+
+## Scanner Handler Interface
+
+### `Integer rssiThreshold()`
+
+Threshold limit. return <b>null</b> to accept all beacons return a valid value (e.g. -50 to -10) to filter beacons within a RSSI value
+
+ * **Returns:** Threshold limit
+
+### `void onError(Scanner scanner, int error)`
+
+Notify an error during scan
+
+ * **Parameters:**
+   * `scanner` — scanner instance
+   * `error` — error code
+
+### `void onStart(Scanner scanner)`
+
+Callback when the scanner has been started
+
+ * **Parameters:** `scanner` — scanner instance
+
+### `void onStop(Scanner scanner)`
+
+Callback when the scanner has been stopped
+
+ * **Parameters:** `scanner` — scanner instance
+
+### `boolean accept(Beacon beacon)`
+
+Filter to accept/refuse a Beacon found
+
+ * **Parameters:** `beacon` — found beacon
+
+     <p>
+ * **Returns:** true when the found beacon have to be notified
+
+### `void onBeaconDetected(Scanner scanner, Beacon beacon)`
+
+ * **Parameters:**
+   * `scanner` — scanner instance
+   * `beacon` — Beacon found
+
+## Scanner
 
 The scanner
 
+
+
+### Usage
 ```java
 Scanner scanner = new Scanner(new Scanner.Handler() {
                         private final String TAG = "Scanner.Handler";
