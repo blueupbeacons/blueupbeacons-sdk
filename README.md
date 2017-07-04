@@ -106,9 +106,36 @@ Filter to accept/refuse a Beacon found
    * `scanner` — scanner instance
    * `beacon` — Beacon found
 
+
+
 ## Scanner
 
-The scanner
+### `public boolean isScanning()`
+
+ * **Returns:** whether the scanner is running
+
+### `public void start(Mode mode)`
+
+Start the scanner with the specified scan mode. <b>LowPower</b> Perform Bluetooth LE scan in low power mode. This is the default scan mode as it consumes the least power. <b>Balanced</b> Perform Bluetooth LE scan in balanced power mode. Scan results are returned at a rate that provides a good trade-off between scan frequency and power consumption. <b>MaxPerformance</b>Scan using highest duty cycle. It's recommended to only use this mode when the application is running in the foreground.
+
+ * **See also:** Mode
+
+     <p>
+ * **Parameters:** `mode` — scan mode
+
+### `public void start()`
+
+Start the scanner with the default scan mode <b>Balanced</b>
+
+ * **See also:** Mode
+
+### `public void stop()`
+
+Stop the scanner
+
+### `public void toggle()`
+
+Start or stop the scanner.
 
 
 
