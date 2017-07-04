@@ -211,8 +211,14 @@ Scanner scanner = new Scanner(new Scanner.Handler() {
 ## `public String getInstance()`
 
  * **Returns:** Instance ID
+ 
+ 
 ## EddystoneUrl
+## `public String getUrl()`
 
+ * **Returns:** Url;
+ 
+ 
 ## EddystoneTlm
 
 ## EddystoneEid
