@@ -204,23 +204,49 @@ Scanner scanner = new Scanner(new Scanner.Handler() {
 ## Frames
 
 ## EddystoneUID
-## `public String getNamespace()`
+### `public String getNamespace()`
 
  * **Returns:** Namespace ID
 
-## `public String getInstance()`
+### `public String getInstance()`
 
  * **Returns:** Instance ID
  
  
 ## EddystoneUrl
-## `public String getUrl()`
+### `public String getUrl()`
 
  * **Returns:** Url;
  
  
 ## EddystoneTlm
+### `public int getVersion()`
 
+ * **Returns:** version
+
+### `public boolean isEncrypted()`
+
+ * **Returns:** is content encrypted
+
+### `public int getBatteryVoltage()`
+
+ * **Returns:** battery voltage
+
+### `public double getTemperature()`
+
+ * **Returns:** temperature
+
+### `public long getPackets()`
+
+ * **Returns:** number of packets advertised since boot
+
+### `public long getTimeSincePowerOn()`
+
+ * **Returns:** milliseconds since last reboot
+
+### `public Date getRebootDate()`
+
+ * **Returns:** Date of last reboot
 ## EddystoneEid
 
 ## IBeacon
