@@ -1,88 +1,81 @@
-# blueupbeacons-sdk
+# blueupbeacons-sdk for Android
 
-One Paragraph of project description goes here
+Blueup SDK will make you able to develop Android application that interate with blueup beacons.
+
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
-
-### Prerequisites
-
-What things you need to install the software and how to install them
+Reference in your Gradle file the library
 
 ```
-Give examples
+compile 'com.blueupbeacons.sdk:sdk:1.0.0'
 ```
 
-### Installing
 
-A step by step series of examples that tell you have to get a development env running
+## Objects
 
-Say what the step will be
+### Scanner
 
+The scanner
+
+```java
+Scanner scanner = new Scanner(new Scanner.Handler() {
+                        private final String TAG = "Scanner.Handler";
+
+                        @Override
+                        public Integer rssiThreshold() {
+                            
+                            return null;
+                        }
+
+                        @Override
+                        public void onError(Scanner scanner, int error) {
+                            Log.d(TAG, "onError: " + String.valueOf(error));
+                        }
+
+                        @Override
+                        public void onStart(Scanner scanner) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    layoutBeaconInformations.setVisibility(View.GONE);
+                                    pbScanning.setVisibility(View.VISIBLE);
+                                    btActivity.setText("Stop Scan");
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onStop(Scanner scanner) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    pbScanning.setVisibility(View.GONE);
+                                    btActivity.setText("Start Scan");
+                                }
+                            });
+                        }
+
+                        @Override
+                        public boolean accept(Beacon beacon) {
+                            return true;
+                        }
+
+                        @Override
+                        public void onBeaconDetected(Scanner scanner, final Beacon beacon) {
+                            Log.d(TAG, beacon.toString());
+                            txtBeaconInfo.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    pbScanning.setVisibility(View.GONE);
+                                    layoutBeaconInformations.setVisibility(View.VISIBLE);
+                                    txtBeaconSerial.setText(beacon.getName());
+                                    txtBeaconSerial.setVisibility(View.VISIBLE);
+                                    txtBeaconInfo.setText(beacon.toString());
+                                    txtBeaconInfo.setVisibility(View.VISIBLE);
+                                }
+                            });
+                        }
+                    });
 ```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
-
-## Built With
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
-
-## Authors
-
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Hat tip to anyone who's code was used
-* Inspiration
-* etc
 
