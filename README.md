@@ -248,9 +248,38 @@ Scanner scanner = new Scanner(new Scanner.Handler() {
 
  * **Returns:** Date of last reboot
 ## EddystoneEid
+### `public String getId()`
 
+ * **Returns:** Identifier
 ## IBeacon
+### `public String getUuid()`
 
+ * **Returns:** UUID
+
+### `public int getMajor()`
+
+ * **Returns:** Major
+
+### `public int getMinor()`
+
+ * **Returns:** Minor
 ## Quuppa
+### `public boolean hasCustomTag()`
 
+ * **Returns:** Advertise custom tag
+
+### `public String getCustomTag()`
+
+ * **Returns:** Custom tag Value if set, otherwise NULL
 ## Sensors
+### `public double getTemperature()`
+
+ * **Returns:** Temperature
+
+### `public double getHumidity()`
+
+ * **Returns:** Humidity
+
+### `public double getPressure()`
+
+ * **Returns:** Pressure
