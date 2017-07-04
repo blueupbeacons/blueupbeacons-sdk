@@ -204,7 +204,13 @@ Scanner scanner = new Scanner(new Scanner.Handler() {
 ## Frames
 
 ## EddystoneUID
+## `public String getNamespace()`
 
+ * **Returns:** Namespace ID
+
+## `public String getInstance()`
+
+ * **Returns:** Instance ID
 ## EddystoneUrl
 
 ## EddystoneTlm
