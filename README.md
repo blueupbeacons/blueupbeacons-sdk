@@ -1,6 +1,6 @@
 # blueupbeacons-sdk for Android
 
-Blueup SDK will make you able to develop Android application that interate with blueup beacons.
+Blueup SDK will make you able to develop Android applications that receive BlueUp beacons frames.
 
 
 ## Getting Started
