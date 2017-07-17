@@ -20,19 +20,27 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blueupbeacons.sdk.ble.*;
+import com.blueupbeacons.sdk.cloud.Client;
+import com.blueupbeacons.sdk.cloud.Result;
+import com.blueupbeacons.sdk.cloud.Session;
+
+import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
     private final static int PERMISSION_REQUEST_COARSE_LOCATION = 1;
     private final static int REQUEST_ENABLE_BT = 1;
+    final String CLIENT_API_CODE = "FK1gcjLnQr8VPNbQfMhW61P8VlVtKc+R7jC+c3voGwOcvoVwk9P8z+PDpCkTPJ4Z";
+    final String CLIENT_API_KEY = "ziAbvKkDChfK/069yOWn+2Q2/25R2mH+fKVBfPeIjG9jNMX6brp07l4tgYou9R1y";
 
     private Handler mHandler;
     private BluetoothAdapter bluetoothAdapter;
 
-    private Button btActivity;
+    private Button btActivity, btCloud;
     private View layoutBeaconInformations;
     private TextView txtBeaconSerial, txtBeaconInfo;
     private ProgressBar pbScanning;
     private Scanner scanner;
+    final Client client = new Client(CLIENT_API_CODE, CLIENT_API_KEY);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                         public Integer rssiThreshold() {
-                            return null;
+                            return -50;
                         }
 
                         @Override
@@ -89,21 +97,61 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                         public boolean accept(Beacon beacon) {
-                            return true;
+                            return beacon.matches(1, 13494);
                         }
 
                         @Override
-                        public void onBeaconDetected(Scanner scanner, final Beacon beacon) {
+                        public void onBeaconDetected(final Scanner scanner, final Beacon beacon) {
                             Log.d(TAG, beacon.toString());
+
+
                             txtBeaconInfo.post(new Runnable() {
                                 @Override
                                 public void run() {
+
+                                    // Stop the scanner
+                                    scanner.stop();
+
+                                    // Display the beacon
                                     pbScanning.setVisibility(View.GONE);
                                     layoutBeaconInformations.setVisibility(View.VISIBLE);
                                     txtBeaconSerial.setText(beacon.getName());
                                     txtBeaconSerial.setVisibility(View.VISIBLE);
                                     txtBeaconInfo.setText(beacon.toString());
                                     txtBeaconInfo.setVisibility(View.VISIBLE);
+
+
+                                    // Connect to cloud
+                                    client.connect(new Client.InitializeCallback() {
+                                        @Override
+                                        public void onStart() {
+                                            txtBeaconInfo.append("\n\nCONNECT TO CLOUD\n");
+                                        }
+
+                                        @Override
+                                        public void onComplete(String token, int keyShift) {
+                                            txtBeaconInfo.append(String.format("Token: %s\n", token));
+                                            txtBeaconInfo.append(String.format("Shift: %d\n", keyShift));
+
+                                            txtBeaconInfo.append("\n\nUPLOAD BEACON DATA\n");
+                                            client.updateBeacon(beacon, new Client.ResultCallback() {
+                                                @Override
+                                                public void onResult(Result result) {
+                                                    if (result.isFailed()) {
+                                                        txtBeaconInfo.append("[ERROR] " + result.getError());
+                                                    } else {
+                                                        txtBeaconInfo.append("[OK]\n" + result.toString());
+                                                    }
+                                                }
+                                            });
+                                        }
+
+                                        @Override
+                                        public void onError(String error, JSONObject data) {
+                                            txtBeaconInfo.append("[ERROR] " + error);
+                                        }
+                                    });
+
                                 }
                             });
                         }
@@ -115,6 +163,59 @@ public class MainActivity extends AppCompatActivity {
 
                     // Start/Stop
                     scanner.toggle();
+                }
+            }
+        });
+        btCloud = (Button) (findViewById(R.id.btCloud));
+        btCloud.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Init
+                if (client.hasState(Client.ConnectionState.Idle)) {
+                    txtBeaconInfo.setText("");
+
+                    client.connect(new Client.InitializeCallback() {
+                        @Override
+                        public void onStart() {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    txtBeaconInfo.append("Connecting...\n");
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onComplete(String token, int keyShift) {
+                            txtBeaconInfo.append("Connection Complete...\n");
+                            txtBeaconInfo.append(String.format("Token: %s\n", token));
+                            txtBeaconInfo.append(String.format("Shift: %d\n", keyShift));
+
+
+                            client.getBeaconList(new Client.ResultCallback() {
+                                @Override
+                                public void onResult(final Result result) {
+                                    txtBeaconInfo.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            txtBeaconInfo.append("\nBEACON LIST\n");
+                                            txtBeaconInfo.append(result.toString());
+                                        }
+                                    });
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onError(final String error, JSONObject data) {
+                            txtBeaconSerial.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    txtBeaconInfo.append("[ERROR] " + error);
+                                }
+                            });
+                        }
+                    });
                 }
             }
         });
@@ -156,6 +257,43 @@ public class MainActivity extends AppCompatActivity {
         } else {
             btActivity.setEnabled(true);
         }
+    }
+
+    private void testClient() {
+        /********
+         [Creating Api]
+         Enter description: Test Api for Android client
+
+         Api created:
+         CODE :: FK1gcjLnQr8VPNbQfMhW61P8VlVtKc+R7jC+c3voGwOcvoVwk9P8z+PDpCkTPJ4Z
+         KEY  :: ziAbvKkDChfK/069yOWn+2Q2/25R2mH+fKVBfPeIjG9jNMX6brp07l4tgYou9R1y
+
+         *******/
+
+
+        // Resume
+        client.connect("", 0, new Client.TokenResumeCallback() {
+            @Override
+            public void onComplete(boolean isResumed, Integer keyShift) {
+
+            }
+        });
+
+        // Make Call
+        /*client.on("uploadMeasurements", new Client.ResultCallback() {
+            @Override
+            public void onResult(Result result) {
+
+            }
+        });*/
+
+        // Make Call
+        /*client.on("downloadMeasurements", new Client.ResultCallback() {
+            @Override
+            public void onResult(Result result) {
+
+            }
+        });*/
     }
 
     @TargetApi(Build.VERSION_CODES.M)

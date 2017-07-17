@@ -9,10 +9,6 @@ import java.util.ArrayList;
 
 import com.blueupbeacons.sdk.ble.Frame;
 
-/**
- * Created by massimo on 21/06/17.
- */
-
 public final class IBeacon extends Frame {
     private String uuid;
     private int major, minor, txPower;

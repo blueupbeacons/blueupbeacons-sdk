@@ -5,10 +5,6 @@ import org.json.JSONObject;
 
 import com.blueupbeacons.sdk.ble.Frame;
 
-/**
- * Created by massimo on 22/06/17.
- */
-
 public final class Sensors extends Frame {
     private double temperature, humidity, pressure;
 

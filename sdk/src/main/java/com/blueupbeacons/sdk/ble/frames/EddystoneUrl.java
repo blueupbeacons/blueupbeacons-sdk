@@ -7,10 +7,6 @@ import java.nio.charset.StandardCharsets;
 
 import com.blueupbeacons.sdk.ble.Frame;
 
-/**
- * Created by massimo on 21/06/17.
- */
-
 public final class EddystoneUrl extends Frame {
     private static final String[] URL_SCHEMES = new String[]{
             "http://www.",

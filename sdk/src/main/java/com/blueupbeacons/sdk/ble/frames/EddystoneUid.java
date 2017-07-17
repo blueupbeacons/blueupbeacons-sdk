@@ -5,10 +5,6 @@ import org.json.JSONObject;
 
 import com.blueupbeacons.sdk.ble.Frame;
 
-/**
- * Created by massimo on 21/06/17.
- */
-
 public final class EddystoneUid extends Frame {
     private static final int NAMESPACE_LEN = 10;
     private static final int INSTANCE_LEN = 6;

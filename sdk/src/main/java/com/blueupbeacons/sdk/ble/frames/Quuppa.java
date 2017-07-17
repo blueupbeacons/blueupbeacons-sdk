@@ -5,10 +5,6 @@ import org.json.JSONObject;
 
 import com.blueupbeacons.sdk.ble.Frame;
 
-/**
- * Created by massimo on 21/06/17.
- */
-
 public final class Quuppa extends Frame {
     final private static char[] hexArray = "0123456789ABCDEF".toCharArray();
     private final static int TAG_TYPE_USER_INPUT = 0x10;

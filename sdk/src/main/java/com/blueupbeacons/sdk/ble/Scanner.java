@@ -6,10 +6,12 @@ import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanRecord;
 import android.bluetooth.le.ScanResult;
+import android.bluetooth.le.ScanSettings;
 import android.os.ParcelUuid;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
@@ -21,10 +23,10 @@ import com.blueupbeacons.sdk.ble.frames.IBeacon;
 import com.blueupbeacons.sdk.ble.frames.Quuppa;
 import com.blueupbeacons.sdk.ble.frames.Sensors;
 
-/**
- * Created by massimo on 21/06/17.
- */
 
+/**
+ * Scanner
+ */
 public final class Scanner {
     private final static String TAG = Scanner.class.getSimpleName();
     private final static String NAME = "BLUEUP";
@@ -34,32 +36,71 @@ public final class Scanner {
     private static final int APPLE_MANUFACTURER_UUID = 0x4C;
     private static final int QUUPPA_MANUFATURER_UUID = 0xC7;
     private static final ParcelUuid ENVIROMENTAL_SENSING = ParcelUuid.fromString("0000181a-0000-1000-8000-00805f9b34fb");
-    public static final int UID = 0x00;
-    public static final int URL = 0x10;
-    public static final int TLM = 0x20;
-    public static final int EID = 0x30;
+    static final int UID = 0x00;
+    static final int URL = 0x10;
+    static final int TLM = 0x20;
+    static final int EID = 0x30;
 
+    public enum Mode {LowPower, Balanced, MaxPerformance}
 
     private final HashMap<String, Beacon> beacons = new HashMap<>();
 
     private Handler handler;
 
+    private Mode mode = Mode.Balanced;
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothLeScanner bluetoothLeScanner;
     private ScanCallback bluetoothLeScannerCallback;
     private boolean bluetoothLeScannerRunning = false;
 
+    /**
+     * Scanner Handler Interface
+     */
     public interface Handler {
+
+        /**
+         * Threshold limit.
+         * return <b>null</b> to accept all beacons
+         * return a valid value (e.g. -50 to -10) to filter beacons within a RSSI value
+         *
+         * @return Threshold limit
+         */
         Integer rssiThreshold();
 
+        /**
+         * Notify an error during scan
+         *
+         * @param scanner scanner instance
+         * @param error   error code
+         */
         void onError(Scanner scanner, int error);
 
+        /**
+         * Callback when the scanner has been started
+         *
+         * @param scanner scanner instance
+         */
         void onStart(Scanner scanner);
 
+        /**
+         * Callback when the scanner has been stopped
+         *
+         * @param scanner scanner instance
+         */
         void onStop(Scanner scanner);
 
+        /**
+         * Filter to accept/refuse a Beacon found
+         *
+         * @param beacon found beacon
+         * @return true when the found beacon have to be notified
+         */
         boolean accept(Beacon beacon);
 
+        /**
+         * @param scanner scanner instance
+         * @param beacon  Beacon found
+         */
         void onBeaconDetected(Scanner scanner, Beacon beacon);
     }
 
@@ -150,7 +191,6 @@ public final class Scanner {
         byte services = 0;
         byte[] csdata = record.getServiceData(CUSTOM_SERVICE_UUID);
         if (csdata != null && csdata.length > 0) {
-            Log.d(TAG, "technologies:" + csdata[0]);
             services = csdata[0];
         }
 
@@ -209,11 +249,23 @@ public final class Scanner {
         return beacon;
     }
 
+    /**
+     * @return whether the scanner is running
+     */
     public boolean isScanning() {
         return bluetoothLeScannerRunning;
     }
 
-    public void start() {
+    /**
+     * Start the scanner with the specified scan mode.
+     * <b>LowPower</b> Perform Bluetooth LE scan in low power mode. This is the default scan mode as it consumes the least power.
+     * <b>Balanced</b> Perform Bluetooth LE scan in balanced power mode. Scan results are returned at a rate that provides a good trade-off between scan frequency and power consumption.
+     * <b>MaxPerformance</b>Scan using highest duty cycle. It's recommended to only use this mode when the application is running in the foreground.
+     *
+     * @param mode scan mode
+     * @see Mode
+     */
+    public void start(Mode mode) {
         if (bluetoothLeScannerRunning) {
             return;
         }
@@ -225,10 +277,36 @@ public final class Scanner {
         }
 
         bluetoothLeScannerRunning = true;
-        bluetoothLeScanner.startScan(bluetoothLeScannerCallback);
+        this.mode = mode;
+        ScanSettings.Builder settings = new ScanSettings.Builder();
+        switch (mode) {
+            case LowPower:
+                settings.setScanMode(ScanSettings.SCAN_MODE_LOW_POWER);
+                break;
+            case Balanced:
+                settings.setScanMode(ScanSettings.SCAN_MODE_BALANCED);
+                break;
+            case MaxPerformance:
+                settings.setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY);
+                break;
+        }
+
+        bluetoothLeScanner.startScan(null, settings.build(), bluetoothLeScannerCallback);
         handler.onStart(this);
     }
 
+    /**
+     * Start the scanner with the default scan mode <b>Balanced</b>
+     *
+     * @see Mode
+     */
+    public void start() {
+        start(mode);
+    }
+
+    /**
+     * Stop the scanner
+     */
     public void stop() {
         if (!bluetoothLeScannerRunning) {
             return;
@@ -243,7 +321,7 @@ public final class Scanner {
     }
 
     /**
-     * Start or stop the scanner
+     * Start or stop the scanner.
      */
     public void toggle() {
         if (bluetoothLeScannerRunning) {
@@ -251,5 +329,12 @@ public final class Scanner {
         } else {
             start();
         }
+    }
+
+    /**
+     * @return Get All Discovered beacons
+     */
+    public ArrayList<Beacon> getDiscoveredBeacons() {
+        return new ArrayList<>(beacons.values());
     }
 }

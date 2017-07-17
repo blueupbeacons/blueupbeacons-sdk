@@ -7,9 +7,6 @@ import java.util.Date;
 
 import com.blueupbeacons.sdk.ble.Frame;
 
-/**
- * Created by massimo on 21/06/17.
- */
 
 public final class EddystoneTlm extends Frame {
     private int version, batteryVoltage;
@@ -76,28 +73,57 @@ public final class EddystoneTlm extends Frame {
         return object;
     }
 
-
-
+    /**
+     * @return version
+     */
     public int getVersion() {
         return version;
     }
 
+    /**
+     *
+     * @return is content encrypted
+     */
+    public boolean isEncrypted() {
+        return version == 0x01;
+    }
+
+    /**
+     *
+     * @return battery voltage
+     */
     public int getBatteryVoltage() {
         return batteryVoltage;
     }
 
+    /**
+     *
+     * @return temperature
+     */
     public double getTemperature() {
         return temperature;
     }
 
+    /**
+     *
+     * @return number of packets advertised since boot
+     */
     public long getPackets() {
         return packets;
     }
 
+    /**
+     *
+      * @return milliseconds since last reboot
+     */
     public long getTimeSincePowerOn() {
         return timeSincePowerOn;
     }
 
+    /**
+     *
+     * @return Date of last reboot
+     */
     public Date getRebootDate() {
         return rebootDate;
     }

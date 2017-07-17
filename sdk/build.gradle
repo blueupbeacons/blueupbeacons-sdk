@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-
+apply plugin: 'com.novoda.bintray-release'
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
@@ -27,6 +27,17 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.squareup.okhttp:okhttp:2.4.0'
+    compile 'com.scottyab:aescrypt:0.0.1'
     testCompile 'junit:junit:4.12'
 
+}
+publish {
+    groupId = 'com.blueupbeacons.sdk'
+    artifactId = 'sdk'
+    publishVersion = '1.2.0'
+    desc = 'Blueup SDK'
+    licences = ['Apache-2.0']
+    uploadName='sdk'
+    website = 'https://github.com/blueupbeacons/blueupbeacons-sdk.git'
 }

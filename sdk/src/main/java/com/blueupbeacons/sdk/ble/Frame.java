@@ -6,10 +6,10 @@ import org.json.JSONObject;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-/**
- * Created by massimo on 21/06/17.
- */
 
+/**
+ *  Frame
+ */
 public abstract class Frame {
     public enum Technology {
         Eddystone, iBeacon, Quuppa, Sensors

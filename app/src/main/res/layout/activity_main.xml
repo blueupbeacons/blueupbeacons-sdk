@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
@@ -11,11 +12,12 @@
     tools:context="com.blueupbeacons.devtools.MainActivity">
 
     <LinearLayout
+        android:id="@+id/layerLog"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/btScanner"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:layout_weight="100"
         android:orientation="vertical">
 
         <LinearLayout
@@ -37,7 +39,7 @@
             <TextView
                 android:id="@+id/txtBeaconInfo"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-condensed"
                 android:padding="3dp"
                 android:text="Beacon\nINFOS"
@@ -50,16 +52,29 @@
             style="?android:attr/progressBarStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:layout_marginTop="64dp" />
+            android:layout_marginTop="64dp"
+            android:visibility="gone" />
     </LinearLayout>
 
     <Button
         android:id="@+id/btScanner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:enabled="false"
-        android:text="Start" />
 
-</RelativeLayout>
+
+        android:layout_weight="1"
+        android:enabled="false"
+        android:text="Start"
+        android:visibility="visible" />
+
+    <Button
+        android:id="@+id/btCloud"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+
+        android:layout_weight="1"
+        android:text="Cloud"
+        android:visibility="visible" />
+
+</LinearLayout>

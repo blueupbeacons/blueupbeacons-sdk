@@ -1,10 +1,15 @@
 package com.blueupbeacons.sdk.ble;
 
+import android.support.annotation.Nullable;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -89,7 +94,6 @@ public final class Beacon {
     }
 
     /**
-     *
      * @return battery level (0-100)
      */
     public int getBattery() {
@@ -97,7 +101,6 @@ public final class Beacon {
     }
 
     /**
-     *
      * @return model
      */
     public int getModel() {
@@ -105,7 +108,6 @@ public final class Beacon {
     }
 
     /**
-     *
      * @param padding padding length
      * @return model
      */
@@ -126,7 +128,6 @@ public final class Beacon {
     }
 
     /**
-     *
      * @return serial number
      */
     public int getSerial() {
@@ -134,7 +135,6 @@ public final class Beacon {
     }
 
     /**
-     *
      * @param padding padding length
      * @return
      */
@@ -156,14 +156,14 @@ public final class Beacon {
 
     /**
      * Get Beacon fullname (BLUEUP-xx-yyyyy)
-     * @return
+     *
+     * @return Full name
      */
     public String getName() {
         return String.format("BLUEUP-%s-%s", getModel(2), getSerial(5));
     }
 
     /**
-     *
      * @return Device MAC Address
      */
     public String getAddress() {
@@ -171,7 +171,6 @@ public final class Beacon {
     }
 
     /**
-     *
      * @return Advertise flags
      */
     public AdvertisingFrames advertise() {
@@ -193,7 +192,32 @@ public final class Beacon {
     }
 
     /**
-     *
+     * @param model  beacon model
+     * @param serial beacon serial
+     * @return Whether beacon matches to given arguments
+     */
+    public boolean matches(int model, int serial) {
+        return (this.model == model && this.serial == serial);
+    }
+
+
+
+    public Frame getFrame(Frame.Type type) {
+        for (Frame f : map.values()) {
+            if (f.type().equals(type)) {
+                return f;
+            }
+        }
+
+
+        return null;
+    }
+
+    public ArrayList<Frame> getFrames() {
+        return new ArrayList<>(map.values());
+    }
+
+    /**
      * @return Beacon json serialization
      */
     public JSONObject toJson() {
