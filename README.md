@@ -8,7 +8,7 @@ Blueup SDK will make you able to develop Android applications that receive BlueU
 Reference in your Gradle file the library
 
 ```
-compile 'com.blueupbeacons.sdk:sdk:1.0.0'
+compile 'com.blueupbeacons.sdk:sdk:1.3.0'
 ```
 
 
