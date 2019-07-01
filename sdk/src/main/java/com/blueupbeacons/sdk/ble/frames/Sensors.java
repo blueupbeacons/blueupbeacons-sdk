@@ -34,7 +34,7 @@ public final class Sensors extends Frame {
         // Skip Temp UUID
         reader.skipBytes(2);
 
-        temperature = ((double) reader.readUInt16()) * .01;
+        temperature = ((double) reader.readInt16()) * .01;
 
         // Skip Humidity UUID
         reader.skipBytes(2);
